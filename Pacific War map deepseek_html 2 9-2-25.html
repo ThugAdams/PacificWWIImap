@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Righteous Might: Victory over Japan in World War II</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #1a1a2e;
+            color: #f4f4f4;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0a1931 0%, #1a1a2e 100%);
+            color: #e6d5b8;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            border-bottom: 2px solid #e6d5b8;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-style: italic;
+            color: #c9b18f;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background-color: #162447;
+            color: #e6d5b8;
+            border: 1px solid #c9b18f;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #1f4068;
+            transform: translateY(-2px);
+        }
+        
+        #map-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        #sidebar {
+            width: 320px;
+            background-color: #1f4068;
+            padding: 1.5rem;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 0.7rem;
+            border: 1px solid #c9b18f;
+            border-radius: 4px;
+            background-color: #1a1a2e;
+            color: #e6d5b8;
+        }
+        
+        .instructions {
+            background-color: #1a1a2e;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #c9b18f;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 0.5rem;
+            color: #e6d5b8;
+        }
+        
+        .instructions p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #c9b18f;
+        }
+        
+        .points-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .point-item {
+            padding: 1rem;
+            background-color: #162447;
+            border-radius: 6px;
+            border-left: 3px solid #c9b18f;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .point-item:hover {
+            background-color: #1f4068;
+            transform: translateX(2px);
+        }
+        
+        .point-item h4 {
+            color: #e6d5b8;
+            margin-bottom: 0.3rem;
+        }
+        
+        .point-item p {
+            color: #c9b18f;
+            font-size: 0.9rem;
+        }
+        
+        #map {
+            flex: 1;
+            z-index: 1;
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(26, 26, 46, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            border: 1px solid #c9b18f;
+            max-width: 300px;
+        }
+        
+        .legend h4 {
+            margin-bottom: 0.8rem;
+            color: #e6d5b8;
+            border-bottom: 1px solid #c9b18f;
+            padding-bottom: 0.5rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            border: 1px solid #fff;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 0.5rem;
+        }
+        
+        .timeline {
+            position: absolute;
+            top: 100px;
+            right: 20px;
+            background-color: rgba(26, 26, 46, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            border: 1px solid #c9b18f;
+            max-width: 200px;
+        }
+        
+        .timeline h4 {
+            margin-bottom: 0.8rem;
+            color: #e6d5b8;
+            border-bottom: 1px solid #c9b18f;
+            padding-bottom: 0.5rem;
+        }
+        
+        .timeline-item {
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        
+        .timeline-item:hover {
+            background-color: #2c3e63;
+        }
+        
+        .timeline-details {
+            display: none;
+            background-color: #1a1a2e;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 0.85rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #0a1931;
+            color: #c9b18f;
+            font-size: 0.9rem;
+            border-top: 1px solid #c9b18f;
+        }
+        
+        .credit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .credit-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #c9b18f;
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            #map-container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+                max-height: 40vh;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .legend, .timeline {
+                position: relative;
+                max-width: 100%;
+                margin: 10px;
+                bottom: auto;
+                right: auto;
+            }
+        }
+        
+        /* Custom popup styling */
+        .custom-popup {
+            color: #1a1a2e;
+            max-width: 300px;
+        }
+        
+        .custom-popup h3 {
+            color: #1f4068;
+            border-bottom: 2px solid #c9b18f;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .custom-popup img {
+            max-width: 100%;
+            border: 1px solid #c9b18f;
+            margin: 10px 0;
+        }
+        
+        .custom-popup a {
+            color: #1f4068;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
+        /* Custom marker pulsing animation */
+        .pulse-icon {
+            border-radius: 50%;
+            box-shadow: 0 0 0 rgba(231, 76, 60, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+            }
+        }
+
+        /* Map placeholder styling */
+        .map-placeholder {
+            flex: 1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #162447 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #c9b18f;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .map-placeholder h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #e6d5b8;
+        }
+        
+        .map-placeholder p {
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .map-placeholder .map-preview {
+            width: 80%;
+            height: 300px;
+            background-color: #1f4068;
+            border: 2px solid #c9b18f;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-preview .pacific-ocean {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #1a3e6a;
+        }
+        
+        .map-preview .land {
+            position: absolute;
+            background-color: #2d5a3d;
+            border: 1px solid #1c3b27;
+        }
+        
+        .map-preview .japan {
+            top: 20%;
+            left: 80%;
+            width: 10%;
+            height: 15%;
+            border-radius: 30% 30% 0 0;
+        }
+        
+        .map-preview .hawaii {
+            top: 50%;
+            left: 20%;
+            width: 3%;
+            height: 5%;
+            border-radius: 50%;
+        }
+        
+        .map-preview .australia {
+            bottom: 10%;
+            left: 75%;
+            width: 20%;
+            height: 30%;
+            border-radius: 0 0 30% 30%;
+        }
+        
+        .map-preview .marker {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .map-preview .marker.red {
+            background-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.5);
+        }
+        
+        .map-preview .marker.blue {
+            background-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
+        }
+        
+        .map-preview .marker.purple {
+            background-color: #9b59b6;
+            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.5);
+        }
+        
+        .map-preview .marker.hiroshima {
+            top: 30%;
+            left: 78%;
+        }
+        
+        .map-preview .marker.pearl-harbor {
+            top: 50%;
+            left: 20%;
+        }
+        
+        .map-preview .marker.midway {
+            top: 40%;
+            left: 30%;
+        }
+        
+        .map-preview .marker.iwo-jima {
+            top: 35%;
+            left: 70%;
+        }
+        
+        .map-preview .marker.okinawa {
+            top: 32%;
+            left: 72%;
+        }
+        
+        .map-preview .movement-line {
+            position: absolute;
+            height: 3px;
+            transform-origin: left center;
+        }
+        
+        .map-preview .us-navy-line {
+            top: 50%;
+            left: 21%;
+            width: 40%;
+            background: linear-gradient(90deg, #3498db 0%, transparent 100%);
+            transform: rotate(35deg);
+        }
+        
+        .map-preview .us-marine-line {
+            top: 45%;
+            left: 40%;
+            width: 30%;
+            background: linear-gradient(90deg, #000 0%, transparent 100%);
+            transform: rotate(50deg);
+        }
+        
+        .map-preview .japanese-line {
+            top: 30%;
+            left: 81%;
+            width: 50%;
+            background: linear-gradient(270deg, #e74c3c 0%, transparent 100%);
+            transform: rotate(-40deg);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Righteous Might: Victory over Japan in World War II</h1>
+            <p class="subtitle">The Pacific Theater 1931-1945</p>
+            <div class="controls">
+                <button id="reset-view">Reset View</button>
+                <button id="toggle-satellite">Satellite View</button>
+                <button id="show-japan-forces">Japanese Movements</button>
+                <button id="show-us-forces">US Movements</button>
+            </div>
+        </div>
+    </header>
+    
+    <div id="map-container">
+        <div id="sidebar">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search battles and events...">
+                <button id="search-btn">Search</button>
+            </div>
+            
+            <div class="instructions">
+                <h3>Map Navigation</h3>
+                <p>• Click on any marker to see battle details</p>
+                <p>• Use the search box to find specific events</p>
+                <p>• Toggle between map views using the buttons above</p>
+                <p>• Click on timeline years to see force comparisons</p>
+            </div>
+            
+            <div class="points-list" id="points-list">
+                <div class="point-item">
+                    <h4>Japan invades Manchuria</h4>
+                    <p><strong>Sept. 18, 1931</strong> - Japan seizes Manchuria after staging Mukden Incident...</p>
+                </div>
+                <div class="point-item">
+                    <h4>Japan attacks Pearl Harbor</h4>
+                    <p><strong>Dec. 7, 1941</strong> - Japanese carrier fleet launches surprise strike on U.S. Pacific Fleet...</p>
+                </div>
+                <div class="point-item">
+                    <h4>Battle of Midway</h4>
+                    <p><strong>June 4–7, 1942</strong> - U.S. Navy ambushes and devastates Japanese fleet, sinking four carriers...</p>
+                </div>
+                <div class="point-item">
+                    <h4>Atomic bomb on Hiroshima</h4>
+                    <p><strong>Aug. 6, 1945</strong> - U.S. drops atomic bomb, killing 70,000 instantly...</p>
+                </div>
+                <div class="point-item">
+                    <h4>Japan signs surrender</h4>
+                    <p><strong>Sept. 2, 1945</strong> - Japanese and Allied officials sign surrender documents aboard USS Missouri...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="map-placeholder">
+            <h2>Interactive Map Preview</h2>
+            <p>This preview shows the layout and design of the interactive WWII Pacific Theater map. When implemented with Leaflet.js, this will be a fully interactive map with clickable markers, movement lines, and detailed information about each battle.</p>
+            
+            <div class="map-preview">
+                <div class="pacific-ocean"></div>
+                <div class="land japan"></div>
+                <div class="land hawaii"></div>
+                <div class="land australia"></div>
+                
+                <div class="marker red hiroshima"></div>
+                <div class="marker blue pearl-harbor"></div>
+                <div class="marker purple midway"></div>
+                <div class="marker blue iwo-jima"></div>
+                <div class="marker blue okinawa"></div>
+                
+                <div class="movement-line us-navy-line"></div>
+                <div class="movement-line us-marine-line"></div>
+                <div class="movement-line japanese-line"></div>
+            </div>
+            
+            <p style="margin-top: 20px;">The final map will include all the events you listed, with red markers for Japanese offensives, blue for US offensives, and purple for joint engagements.</p>
+        </div>
+        
+        <div class="legend">
+            <h4>Map Legend</h4>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                <span>Japanese Offensive</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #3498db;"></div>
+                <span>US Offensive</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #9b59b6;"></div>
+                <span>Joint Engagement</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line" style="background-color: #2ecc71;"></div>
+                <span>US Army Movement</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line" style="background-color: #3498db;"></div>
+                <span>US Navy Movement</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line" style="background-color: #000;"></div>
+                <span>US Marine Movement</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line" style="background-color: #e74c3c;"></div>
+                <span>Japanese Movement</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #f1c40f;"></div>
+                <span>Bombing Raid</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #ff5733;"></div>
+                <span>Atomic Bomb</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #BF0A30;"></div>
+                <span>US Flag</span>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <h4>Timeline</h4>
+            <div class="timeline-item" data-year="1945">
+                1945
+                <div class="timeline-details">
+                    <p><strong>US Forces:</strong> 3.5M personnel, 10,000 aircraft, 670 warships</p>
+                    <p><strong>Japanese Forces:</strong> 2.2M personnel, 5,000 aircraft, 190 warships</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-year="1944">
+                1944
+                <div class="timeline-details">
+                    <p><strong>US Forces:</strong> 2.8M personnel, 8,500 aircraft, 520 warships</p>
+                    <p><strong>Japanese Forces:</strong> 2.5M personnel, 6,200 aircraft, 240 warships</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-year="1943">
+                1943
+                <div class="timeline-details">
+                    <p><strong>US Forces:</strong> 1.9M personnel, 6,000 aircraft, 350 warships</p>
+                    <p><strong>Japanese Forces:</strong> 2.7M personnel, 7,500 aircraft, 290 warships</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-year="1942">
+                1942
+                <div class="timeline-details">
+                    <p><strong>US Forces:</strong> 1.2M personnel, 3,500 aircraft, 230 warships</p>
+                    <p><strong>Japanese Forces:</strong> 2.8M personnel, 8,000 aircraft, 320 warships</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-year="1941">
+                1941
+                <div class="timeline-details">
+                    <p><strong>US Forces:</strong> 0.4M personnel, 1,200 aircraft, 110 warships</p>
+                    <p><strong>Japanese Forces:</strong> 2.9M personnel, 8,500 aircraft, 350 warships</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Interactive Map of WWII Pacific Theater</p>
+        <div class="credit">
+            <div class="credit-icon"></div>
+            <span>Created by Thug Adams (thugadams.substack.com) using DeepSeek</span>
+        </div>
+    </footer>
+
+    <script>
+        // This is a simplified preview version
+        // The actual implementation would use Leaflet.js for the interactive map
+        
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            alert(`Search functionality would look for: ${searchTerm}`);
+        });
+        
+        document.getElementById('reset-view').addEventListener('click', function() {
+            alert('Map view would be reset to default');
+        });
+        
+        document.getElementById('toggle-satellite').addEventListener('click', function() {
+            alert('View would toggle between map and satellite');
+        });
+        
+        // Timeline functionality
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Hide all details first
+                document.querySelectorAll('.timeline-details').forEach(detail => {
+                    detail.style.display = 'none';
+                });
+                
+                // Show details for this item
+                const details = this.querySelector('.timeline-details');
+                if (details) {
+                    details.style.display = details.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        });
+        
+        // Point item functionality
+        document.querySelectorAll('.point-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const title = this.querySelector('h4').textContent;
+                alert(`Would center map on: ${title}`);
+            });
+        });
+    </script>
+</body>
+</html>
