@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Righteous Might: Victory over Japan in World War II</title>
+    <title>WWII Pacific Theater</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         * {
@@ -14,143 +14,38 @@
         }
         
         body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            background-color: #1a1a2e;
-            color: #f4f4f4;
+            background: #f0f0f0;
         }
         
-        header {
-            background: linear-gradient(135deg, #0a1931 0%, #1a1a2e 100%);
-            color: #e6d5b8;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
             text-align: center;
-            border-bottom: 2px solid #e6d5b8;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
         h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 0;
+            font-size: 24px;
+            font-weight: normal;
         }
         
         .subtitle {
             font-style: italic;
-            color: #c9b18f;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            background-color: #162447;
-            color: #e6d5b8;
-            border: 1px solid #c9b18f;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background-color: #1f4068;
-            transform: translateY(-2px);
-        }
-        
-        #map-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-        
-        #sidebar {
-            width: 320px;
-            background-color: #1f4068;
-            padding: 1.5rem;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .search-box {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .search-box input {
-            flex: 1;
-            padding: 0.7rem;
-            border: 1px solid #c9b18f;
-            border-radius: 4px;
-            background-color: #1a1a2e;
-            color: #e6d5b8;
-        }
-        
-        .instructions {
-            background-color: #1a1a2e;
-            padding: 1rem;
-            border-radius: 6px;
-            border-left: 4px solid #c9b18f;
-        }
-        
-        .instructions h3 {
-            margin-bottom: 0.5rem;
-            color: #e6d5b8;
-        }
-        
-        .instructions p {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #c9b18f;
-        }
-        
-        .points-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-        
-        .point-item {
-            padding: 1rem;
-            background-color: #162447;
-            border-radius: 6px;
-            border-left: 3px solid #c9b18f;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .point-item:hover {
-            background-color: #1f4068;
-            transform: translateX(2px);
-        }
-        
-        .point-item h4 {
-            color: #e6d5b8;
-            margin-bottom: 0.3rem;
-        }
-        
-        .point-item p {
-            color: #c9b18f;
-            font-size: 0.9rem;
+            margin: 5px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
         }
         
         #map {
-            flex: 1;
+            height: calc(100vh - 80px);
+            width: 100%;
             z-index: 1;
         }
         
@@ -158,283 +53,117 @@
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background-color: rgba(26, 26, 46, 0.9);
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
             z-index: 1000;
-            border: 1px solid #c9b18f;
-            max-width: 300px;
+            max-width: 250px;
         }
         
-        .legend h4 {
-            margin-bottom: 0.8rem;
-            color: #e6d5b8;
-            border-bottom: 1px solid #c9b18f;
-            padding-bottom: 0.5rem;
+        .legend h3 {
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            color: #2c3e50;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
-            margin-bottom: 0.5rem;
+            margin: 8px 0;
         }
         
         .legend-color {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            margin-right: 0.5rem;
-            border: 1px solid #fff;
+            margin-right: 12px;
+            border: 2px solid white;
+            box-shadow: 0 0 3px rgba(0,0,0,0.3);
         }
         
-        .legend-line {
-            width: 30px;
-            height: 3px;
-            margin-right: 0.5rem;
-        }
-        
-        .timeline {
-            position: absolute;
-            top: 100px;
-            right: 20px;
-            background-color: rgba(26, 26, 46, 0.9);
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-            z-index: 1000;
-            border: 1px solid #c9b18f;
-            max-width: 200px;
-        }
-        
-        .timeline h4 {
-            margin-bottom: 0.8rem;
-            color: #e6d5b8;
-            border-bottom: 1px solid #c9b18f;
-            padding-bottom: 0.5rem;
-        }
-        
-        .timeline-item {
-            margin-bottom: 0.8rem;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 3px;
-        }
-        
-        .timeline-item:hover {
-            background-color: #2c3e63;
-        }
-        
-        .timeline-details {
-            display: none;
-            background-color: #1a1a2e;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 5px;
-            font-size: 0.85rem;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #0a1931;
-            color: #c9b18f;
-            font-size: 0.9rem;
-            border-top: 1px solid #c9b18f;
-        }
-        
-        .credit {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 5px;
-        }
-        
-        .credit-icon {
-            width: 20px;
-            height: 20px;
-            background-color: #c9b18f;
-            border-radius: 50%;
-        }
-        
-        @media (max-width: 768px) {
-            #map-container {
-                flex-direction: column;
-            }
-            
-            #sidebar {
-                width: 100%;
-                max-height: 40vh;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .legend, .timeline {
-                position: relative;
-                max-width: 100%;
-                margin: 10px;
-                bottom: auto;
-                right: auto;
-            }
-        }
-        
-        /* Custom popup styling */
-        .custom-popup {
-            color: #1a1a2e;
+        .leaflet-popup-content {
+            margin: 15px;
             max-width: 300px;
         }
         
-        .custom-popup h3 {
-            color: #1f4068;
-            border-bottom: 2px solid #c9b18f;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+        .leaflet-popup-content h3 {
+            margin: 0 0 12px 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            font-size: 18px;
         }
         
-        .custom-popup img {
-            max-width: 100%;
-            border: 1px solid #c9b18f;
-            margin: 10px 0;
+        .leaflet-popup-content .date {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 12px;
+            display: block;
         }
         
-        .custom-popup a {
-            color: #1f4068;
-            text-decoration: underline;
+        .leaflet-popup-content .description {
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+        
+        .leaflet-popup-content a {
+            color: #3498db;
+            text-decoration: none;
             font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .leaflet-popup-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .map-credit {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>Righteous Might: Victory over Japan in World War II</h1>
-            <p class="subtitle">The Pacific Theater 1931-1945</p>
-            <div class="controls">
-                <button id="reset-view">Reset View</button>
-                <button id="toggle-satellite">Satellite View</button>
-                <button id="show-japan-forces">Japanese Movements</button>
-                <button id="show-us-forces">US Movements</button>
-            </div>
+    <div class="header">
+        <h1>Righteous Might: Victory over Japan in World War II</h1>
+        <p class="subtitle">The Pacific Theater 1931-1945</p>
+    </div>
+    <div id="map"></div>
+    <div class="legend">
+        <h3>Map Legend</h3>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #e74c3c;"></div>
+            <span>Japanese Offensive</span>
         </div>
-    </header>
-    
-    <div id="map-container">
-        <div id="sidebar">
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search battles and events...">
-                <button id="search-btn">Search</button>
-            </div>
-            
-            <div class="instructions">
-                <h3>Map Navigation</h3>
-                <p>• Click on any marker to see battle details</p>
-                <p>• Use the search box to find specific events</p>
-                <p>• Toggle between map views using the buttons above</p>
-                <p>• Click on timeline years to see force comparisons</p>
-            </div>
-            
-            <div class="points-list" id="points-list">
-                <!-- Points will be added here dynamically -->
-            </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #3498db;"></div>
+            <span>US Offensive</span>
         </div>
-        
-        <div id="map"></div>
-        
-        <div class="legend">
-            <h4>Map Legend</h4>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #e74c3c;"></div>
-                <span>Japanese Offensive</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #3498db;"></div>
-                <span>US Offensive</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #9b59b6;"></div>
-                <span>Joint Engagement</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-line" style="background-color: #2ecc71;"></div>
-                <span>US Army Movement</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-line" style="background-color: #3498db;"></div>
-                <span>US Navy Movement</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-line" style="background-color: #000;"></div>
-                <span>US Marine Movement</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-line" style="background-color: #e74c3c;"></div>
-                <span>Japanese Movement</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #f1c40f;"></div>
-                <span>Bombing Raid</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #ff5733;"></div>
-                <span>Atomic Bomb</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #BF0A30;"></div>
-                <span>US Flag</span>
-            </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #9b59b6;"></div>
+            <span>Joint Engagement</span>
         </div>
-        
-        <div class="timeline">
-            <h4>Timeline</h4>
-            <div class="timeline-item" data-year="1945">
-                1945
-                <div class="timeline-details">
-                    <p><strong>US Forces:</strong> 3.5M personnel, 10,000 aircraft, 670 warships</p>
-                    <p><strong>Japanese Forces:</strong> 2.2M personnel, 5,000 aircraft, 190 warships</p>
-                </div>
-            </div>
-            <div class="timeline-item" data-year="1944">
-                1944
-                <div class="timeline-details">
-                    <p><strong>US Forces:</strong> 2.8M personnel, 8,500 aircraft, 520 warships</p>
-                    <p><strong>Japanese Forces:</strong> 2.5M personnel, 6,200 aircraft, 240 warships</p>
-                </div>
-            </div>
-            <div class="timeline-item" data-year="1943">
-                1943
-                <div class="timeline-details">
-                    <p><strong>US Forces:</strong> 1.9M personnel, 6,000 aircraft, 350 warships</p>
-                    <p><strong>Japanese Forces:</strong> 2.7M personnel, 7,500 aircraft, 290 warships</p>
-                </div>
-            </div>
-            <div class="timeline-item" data-year="1942">
-                1942
-                <div class="timeline-details">
-                    <p><strong>US Forces:</strong> 1.2M personnel, 3,500 aircraft, 230 warships</p>
-                    <p><strong>Japanese Forces:</strong> 2.8M personnel, 8,000 aircraft, 320 warships</p>
-                </div>
-            </div>
-            <div class="timeline-item" data-year="1941">
-                1941
-                <div class="timeline-details">
-                    <p><strong>US Forces:</strong> 0.4M personnel, 1,200 aircraft, 110 warships</p>
-                    <p><strong>Japanese Forces:</strong> 2.9M personnel, 8,500 aircraft, 350 warships</p>
-                </div>
-            </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #ff5733;"></div>
+            <span>Atomic Bomb</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #BF0A30;"></div>
+            <span>US Flag</span>
         </div>
     </div>
-    
-    <footer>
-        <p>Interactive Map of WWII Pacific Theater</p>
-        <div class="credit">
-            <div class="credit-icon"></div>
-            <span>Created by Thug Adams (thugadams.substack.com) using DeepSeek</span>
-        </div>
-    </footer>
+    <div class="map-credit">Created by Thug Adams using DeepSeek</div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
@@ -446,12 +175,7 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
-        // Add satellite tile layer (initially hidden)
-        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-        });
-        
-        // Sample battle data - this would be expanded with all your events
+        // All battle data with coordinates
         const battles = [
             {
                 id: 1,
@@ -465,10 +189,42 @@
                 source: "https://www.britannica.com/event/Mukden-Incident"
             },
             {
+                id: 2,
+                name: "Japan occupies heart of China",
+                date: "July 7, 1937",
+                description: "Clash at Marco Polo Bridge near Beijing erupts into full-scale war as Japanese forces pour into China.",
+                lat: 39.9,
+                lng: 116.4,
+                category: "japanese-offensive",
+                color: "#e74c3c"
+            },
+            {
+                id: 3,
+                name: "Rape of Nanking",
+                date: "Dec. 1937 – Jan. 1938",
+                description: "Japanese troops unleash massacre in Chinese capital; hundreds of thousands slaughtered, up to 80,000 women raped.",
+                lat: 32.1,
+                lng: 118.8,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.history.com/topics/japan/nanjing-massacre"
+            },
+            {
+                id: 4,
+                name: "Japan seizes French Indochina",
+                date: "Sept. 1940",
+                description: "Japan occupies French Indochina after France surrenders to Germany, tightening grip on Southeast Asia.",
+                lat: 21.0,
+                lng: 105.8,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.britannica.com/place/Vietnam/World-War-II-and-its-aftermath"
+            },
+            {
                 id: 5,
-                name: "Day of Infamy: Japan attacks Pearl Harbor",
+                name: "Japan attacks Pearl Harbor",
                 date: "Dec. 7, 1941",
-                description: "Japanese carrier fleet launches surprise strike on U.S. Pacific Fleet, killing over 2,400 Americans; attack galvanizes U.S. 'righteous might'.",
+                description: "Japanese carrier fleet launches surprise strike on U.S. Pacific Fleet, killing over 2,400 Americans.",
                 lat: 21.37,
                 lng: -157.97,
                 category: "japanese-offensive",
@@ -476,10 +232,147 @@
                 source: "https://www.nationalww2museum.org/war/articles/pearl-harbor-attack"
             },
             {
+                id: 6,
+                name: "Japan attacks Philippines",
+                date: "Dec. 7-8, 1941",
+                description: "Japanese air raids cripple U.S. forces at Clark Field; invasion soon overwhelms defenders.",
+                lat: 15.2,
+                lng: 120.9,
+                category: "japanese-offensive",
+                color: "#e74c3c"
+            },
+            {
+                id: 7,
+                name: "Japan attacks Malaya",
+                date: "Dec. 7-8, 1941",
+                description: "Japanese troops storm ashore hours before Pearl Harbor, striking British Malaya.",
+                lat: 3.1,
+                lng: 101.7,
+                category: "japanese-offensive",
+                color: "#e74c3c"
+            },
+            {
+                id: 8,
+                name: "Hong Kong falls",
+                date: "Dec. 8–25, 1941",
+                description: "Japanese forces overwhelm British, Canadian, and Indian defenders; Hong Kong surrenders on Christmas Day.",
+                lat: 22.3,
+                lng: 114.2,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.cbc.ca/history/EPISCONTENTSE1EP13CH2PA1LE.html"
+            },
+            {
+                id: 9,
+                name: "Guam attacked and captured",
+                date: "Dec. 7-8, 1941",
+                description: "Small U.S. garrison overwhelmed by Dec. 10 as Japan secures stepping-stone across Pacific.",
+                lat: 13.4,
+                lng: 144.7,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.britannica.com/event/Battle-of-Guam-World-War-II"
+            },
+            {
+                id: 10,
+                name: "Japan attacks Thailand",
+                date: "Dec. 8, 1941",
+                description: "Japanese landings force quick Thai capitulation, granting Japan vital bases.",
+                lat: 13.8,
+                lng: 100.5,
+                category: "japanese-offensive",
+                color: "#e74c3c"
+            },
+            {
+                id: 11,
+                name: "Wake Island besieged",
+                date: "Dec. 8–23, 1941",
+                description: "Outnumbered U.S. Marines repel first Japanese assault, but after weeks of bombing, the island falls.",
+                lat: 19.3,
+                lng: 166.6,
+                category: "joint-engagement",
+                color: "#9b59b6",
+                source: "https://www.history.navy.mil/research/library/online-reading-room/title-list-alphabetically/b/battle-of-wake-island.html"
+            },
+            {
+                id: 12,
+                name: "Solomon Islands campaign",
+                date: "Jan. 1942 – Aug. 1945",
+                description: "Extended battle began with Japan easily seizing territory controlled by Britain, Australia or under local autonomy.",
+                lat: -9.6,
+                lng: 160.2,
+                category: "joint-engagement",
+                color: "#9b59b6"
+            },
+            {
+                id: 13,
+                name: "Singapore surrenders",
+                date: "Feb. 15, 1942",
+                description: "Britain's 'Gibraltar of the East' collapses as 80,000 troops surrender to Japan.",
+                lat: 1.3,
+                lng: 103.8,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.britannica.com/event/Battle-of-Singapore"
+            },
+            {
+                id: 14,
+                name: "Battle of Darwin",
+                date: "Feb. 19, 1942",
+                description: "Japan air attack on Australia port city kills or wounds 600 people.",
+                lat: -12.5,
+                lng: 130.8,
+                category: "japanese-offensive",
+                color: "#e74c3c"
+            },
+            {
+                id: 15,
+                name: "Bataan Death March",
+                date: "April 1942",
+                description: "After U.S.-Filipino forces surrender, 76,000 prisoners endure brutal 65-mile forced march.",
+                lat: 14.6,
+                lng: 120.4,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.history.com/topics/world-war-ii/bataan-death-march"
+            },
+            {
+                id: 16,
+                name: "Doolittle Raid",
+                date: "April 18, 1942",
+                description: "Sixteen U.S. bombers launch daring raid on Tokyo from aircraft carrier Hornet.",
+                lat: 35.7,
+                lng: 139.8,
+                category: "us-offensive",
+                color: "#3498db",
+                source: "https://www.nationalww2museum.org/war/articles/doolittle-raid"
+            },
+            {
+                id: 17,
+                name: "Battle of Coral Sea",
+                date: "May 4–8, 1942",
+                description: "First carrier-vs-carrier battle in history halts Japanese advance toward Australia.",
+                lat: -15,
+                lng: 155,
+                category: "joint-engagement",
+                color: "#9b59b6",
+                source: "https://www.history.com/topics/world-war-ii/battle-of-coral-sea"
+            },
+            {
+                id: 18,
+                name: "Japan captures Alaskan islands",
+                date: "June 1942",
+                description: "Japanese forces raid and seize the Aleutian Islands of Kiska and Attu in Alaska.",
+                lat: 52.0,
+                lng: 177.5,
+                category: "japanese-offensive",
+                color: "#e74c3c"
+            },
+            {
                 id: 19,
-                name: "Victory at Midway turns tide",
+                name: "Victory at Midway",
                 date: "June 4–7, 1942",
-                description: "U.S. Navy ambushes and devastates Japanese fleet, sinking four carriers. Battle of Midway proves inflection point in the Pacific War.",
+                description: "U.S. Navy ambushes and devastates Japanese fleet, sinking four carriers.",
                 lat: 28.2,
                 lng: -177.4,
                 category: "joint-engagement",
@@ -487,151 +380,224 @@
                 source: "https://www.history.navy.mil/browse-by-topic/wars-conflicts-and-operations/world-war-ii/1942/battle-of-midway.html"
             },
             {
+                id: 20,
+                name: "Battle of Guadalcanal",
+                date: "Aug. 7, 1942 – Feb. 9, 1943",
+                description: "Marines seize Guadalcanal and its airfields in first major U.S. offensive of Pacific War.",
+                lat: -9.5,
+                lng: 160.0,
+                category: "us-offensive",
+                color: "#3498db",
+                source: "https://www.nationalww2museum.org/war/articles/guadalcanal-campaign"
+            },
+            {
+                id: 21,
+                name: "Gilbert and Marshall Islands campaign",
+                date: "Aug. 1942 – Feb. 1944",
+                description: "Extended series of island battles centered around territory Japan captured.",
+                lat: 7.1,
+                lng: 171.4,
+                category: "us-offensive",
+                color: "#3498db"
+            },
+            {
+                id: 22,
+                name: "Aleutian Islands retaken",
+                date: "Aug. 24, 1943",
+                description: "U.S. forces defeat Japan's occupation force and regain complete control.",
+                lat: 52.0,
+                lng: 177.5,
+                category: "us-offensive",
+                color: "#3498db"
+            },
+            {
+                id: 23,
+                name: "Amphibious assault on Tarawa",
+                date: "Nov. 20–23, 1943",
+                description: "Marines storm heavily fortified Tarawa; 1,000 killed in 76 hours of carnage.",
+                lat: 1.4,
+                lng: 172.9,
+                category: "us-offensive",
+                color: "#3498db",
+                source: "https://www.britannica.com/event/Battle-of-Tarawa"
+            },
+            {
+                id: 24,
+                name: "Saipan captured",
+                date: "June 15 – July 9, 1944",
+                description: "Bloody fight costs thousands of U.S. lives; victory places U.S. bombers within range of Tokyo.",
+                lat: 15.2,
+                lng: 145.8,
+                category: "us-offensive",
+                color: "#3498db",
+                source: "https://www.britannica.com/event/Battle-of-Saipan"
+            },
+            {
+                id: 25,
+                name: "Great Marianas Turkey Shoot",
+                date: "June 19–20, 1944",
+                description: "U.S. carrier planes massacre Japanese pilots during Battle of the Philippine Sea.",
+                lat: 16.5,
+                lng: 145.8,
+                category: "us-offensive",
+                color: "#3498db",
+                source: "https://www.history.com/topics/world-war-ii/battle-of-the-philippine-sea"
+            },
+            {
+                id: 26,
+                name: "Liberation of Philippines",
+                date: "Oct. 17–Dec. 26, 1944",
+                description: "Amphibious landings followed by large-scale combat lead to liberation of Philippines.",
+                lat: 12.9,
+                lng: 121.8,
+                category: "us-offensive",
+                color: "#3498db"
+            },
+            {
+                id: 27,
+                name: "Gen. MacArthur returns",
+                date: "Oct. 20, 1944",
+                description: "MacArthur wades ashore on Leyte, fulfilling vow to return to Philippines.",
+                lat: 11.2,
+                lng: 125.0,
+                category: "us-offensive",
+                color: "#3498db",
+                source: "https://www.nationalww2museum.org/war/articles/macarthur-returns-philippines"
+            },
+            {
+                id: 28,
+                name: "Battle of Leyte Gulf",
+                date: "Oct. 23–26, 1944",
+                description: "Largest naval battle in history; U.S. destroys much of Japanese fleet.",
+                lat: 10.9,
+                lng: 125.3,
+                category: "joint-engagement",
+                color: "#9b59b6",
+                source: "https://www.britannica.com/event/Battle-of-Leyte-Gulf"
+            },
+            {
+                id: 29,
+                name: "Battle of Iwo Jima",
+                date: "Feb. 19 – March 26, 1945",
+                description: "Marines rout defenders deeply entrenched on volcanic island.",
+                lat: 24.8,
+                lng: 141.3,
+                category: "us-offensive",
+                color: "#3498db",
+                source: "https://www.history.com/topics/world-war-ii/battle-of-iwo-jima"
+            },
+            {
+                id: 30,
+                name: "Marines raise flag atop Mt. Suribachi",
+                date: "Feb. 23, 1945",
+                description: "Photographer Joe Rosenthal snaps picture of six marines raising an American flag.",
+                lat: 24.75,
+                lng: 141.29,
+                category: "us-offensive",
+                color: "#BF0A30"
+            },
+            {
+                id: 31,
+                name: "Tokyo firebombed",
+                date: "March 9–10, 1945",
+                description: "U.S. B-29 raid kills over 100,000 civilians in single night.",
+                lat: 35.7,
+                lng: 139.8,
+                category: "us-offensive",
+                color: "#3498db"
+            },
+            {
+                id: 32,
+                name: "Battle of Okinawa",
+                date: "April 1 – June 22, 1945",
+                description: "Bloodiest Pacific battle: 12,000 Americans and 100,000 Japanese dead.",
+                lat: 26.5,
+                lng: 128.0,
+                category: "joint-engagement",
+                color: "#9b59b6",
+                source: "https://www.britannica.com/event/Battle-of-Okinawa"
+            },
+            {
+                id: 33,
+                name: "Battleship Yamato sunk",
+                date: "April 7, 1945",
+                description: "Largest battleship in history destroyed by US air and sea forces.",
+                lat: 30.4,
+                lng: 128.0,
+                category: "us-offensive",
+                color: "#3498db"
+            },
+            {
+                id: 34,
+                name: "USS Indianapolis sunk",
+                date: "July 30, 1945",
+                description: "Heavy cruiser torpedoed after delivering the first atomic bomb.",
+                lat: 12.0,
+                lng: 134.5,
+                category: "japanese-offensive",
+                color: "#e74c3c"
+            },
+            {
                 id: 35,
                 name: "Atomic bomb attack on Hiroshima",
                 date: "Aug. 6, 1945",
-                description: "U.S. drops atomic bomb, killing 70,000 instantly; radiation and firestorms kill tens of thousands more.",
+                description: "U.S. drops atomic bomb, killing 70,000 instantly.",
                 lat: 34.4,
                 lng: 132.5,
                 category: "us-offensive",
                 color: "#ff5733",
-                icon: "atomic",
+                source: "https://www.history.com/topics/world-war-ii/bombing-of-hiroshima-and-nagasaki"
+            },
+            {
+                id: 36,
+                name: "Nagasaki hit by second atomic bomb",
+                date: "Aug. 9, 1945",
+                description: "Second atomic bomb devastates Nagasaki.",
+                lat: 32.8,
+                lng: 129.9,
+                category: "us-offensive",
+                color: "#ff5733",
                 source: "https://www.history.com/topics/world-war-ii/bombing-of-hiroshima-and-nagasaki"
             },
             {
                 id: 37,
                 name: "Japan signs surrender",
                 date: "Sept. 2, 1945",
-                description: "Japanese and Allied officials ink name to surrender documents aboard USS Missouri in Tokyo Bay, formally ending WWII and 14 years of conflict in Asia.",
+                description: "Japanese and Allied officials sign surrender documents aboard USS Missouri.",
                 lat: 35.35,
                 lng: 139.65,
                 category: "us-flag",
-                color: "#3498db",
-                icon: "flag",
+                color: "#BF0A30",
                 source: "https://www.britannica.com/event/Surrender-of-Japan"
             }
         ];
-        
-        // Create marker cluster group
-        const markers = L.layerGroup().addTo(map);
-        
+
         // Function to create custom icon
-        function createCustomIcon(color, iconType = null) {
-            let html = '';
-            if (iconType === 'atomic') {
-                html = `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px ${color};"></div>`;
-            } else if (iconType === 'flag') {
-                html = `<div style="background-color: #BF0A30; width: 20px; height: 20px; border-radius: 50%; border: 1px solid #002868; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold;">F</div>`;
-            } else if (iconType === 'bombing') {
-                html = `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center; font-size: 12px;">B</div>`;
-            } else {
-                html = `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white;"></div>`;
-            }
-            
+        function createCustomIcon(color) {
             return L.divIcon({
-                html: html,
+                html: `<div style="background-color: ${color}; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
                 className: 'custom-marker',
-                iconSize: [24, 24],
-                iconAnchor: [12, 12]
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
             });
         }
 
-        // Add points to map and sidebar
-        function renderPoints() {
-            // Clear existing markers and list
-            markers.clearLayers();
-            document.getElementById('points-list').innerHTML = '';
+        // Add all battles to the map
+        battles.forEach(battle => {
+            const marker = L.marker([battle.lat, battle.lng], {
+                icon: createCustomIcon(battle.color)
+            }).addTo(map);
             
-            // Get search term
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const popupContent = `
+                <h3>${battle.name}</h3>
+                <span class="date">${battle.date}</span>
+                <p class="description">${battle.description}</p>
+                ${battle.source ? `<a href="${battle.source}" target="_blank">Learn more</a>` : ''}
+            `;
             
-            // Filter points based on search term
-            const filteredBattles = battles.filter(battle => 
-                battle.name.toLowerCase().includes(searchTerm) || 
-                battle.description.toLowerCase().includes(searchTerm) ||
-                battle.date.toLowerCase().includes(searchTerm)
-            );
-            
-            // Add markers to map and list items to sidebar
-            filteredBattles.forEach(battle => {
-                // Create custom icon
-                const customIcon = createCustomIcon(battle.color, battle.icon);
-                
-                // Create marker
-                const marker = L.marker([battle.lat, battle.lng], {icon: customIcon})
-                    .addTo(markers);
-                
-                // Create popup content
-                const popupContent = `
-                    <div class="custom-popup">
-                        <h3>${battle.name}</h3>
-                        <p><strong>Date:</strong> ${battle.date}</p>
-                        <p>${battle.description}</p>
-                        ${battle.source ? `<p><a href="${battle.source}" target="_blank">Learn more</a></p>` : ''}
-                    </div>
-                `;
-                
-                marker.bindPopup(popupContent, {maxWidth: 300});
-                
-                // Create list item
-                const listItem = document.createElement('div');
-                listItem.className = 'point-item';
-                listItem.innerHTML = `
-                    <h4>${battle.name}</h4>
-                    <p><strong>${battle.date}</strong> - ${battle.description.substring(0, 60)}...</p>
-                `;
-                
-                // Add click event to center map on marker
-                listItem.addEventListener('click', () => {
-                    map.setView([battle.lat, battle.lng], 6);
-                    marker.openPopup();
-                });
-                
-                document.getElementById('points-list').appendChild(listItem);
-            });
-        }
-        
-        // Initial render
-        renderPoints();
-        
-        // Event listeners
-        document.getElementById('search-input').addEventListener('input', renderPoints);
-        document.getElementById('search-btn').addEventListener('click', renderPoints);
-        
-        document.getElementById('reset-view').addEventListener('click', () => {
-            map.setView([20, 150], 4);
+            marker.bindPopup(popupContent);
         });
-        
-        let isSatelliteView = false;
-        document.getElementById('toggle-satellite').addEventListener('click', () => {
-            isSatelliteView = !isSatelliteView;
-            if (isSatelliteView) {
-                map.remove();
-                satelliteLayer.addTo(map);
-                markers.addTo(map);
-                document.getElementById('toggle-satellite').textContent = 'Map View';
-            } else {
-                map.removeLayer(satelliteLayer);
-                document.getElementById('toggle-satellite').textContent = 'Satellite View';
-            }
-        });
-        
-        // Timeline functionality
-        document.querySelectorAll('.timeline-item').forEach(item => {
-            item.addEventListener('click', function() {
-                // Hide all details first
-                document.querySelectorAll('.timeline-details').forEach(detail => {
-                    detail.style.display = 'none';
-                });
-                
-                // Show details for this item
-                const details = this.querySelector('.timeline-details');
-                if (details) {
-                    details.style.display = details.style.display === 'block' ? 'none' : 'block';
-                }
-            });
-        });
-        
+
         // Add scale control
         L.control.scale({metric: true, imperial: false}).addTo(map);
     </script>
