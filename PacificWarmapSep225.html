@@ -306,175 +306,6 @@
             text-decoration: underline;
             font-weight: bold;
         }
-        
-        /* Custom marker pulsing animation */
-        .pulse-icon {
-            border-radius: 50%;
-            box-shadow: 0 0 0 rgba(231, 76, 60, 0.4);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
-            }
-        }
-
-        /* Map placeholder styling */
-        .map-placeholder {
-            flex: 1;
-            background: linear-gradient(135deg, #1a1a2e 0%, #162447 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #c9b18f;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .map-placeholder h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #e6d5b8;
-        }
-        
-        .map-placeholder p {
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-        
-        .map-placeholder .map-preview {
-            width: 80%;
-            height: 300px;
-            background-color: #1f4068;
-            border: 2px solid #c9b18f;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .map-preview .pacific-ocean {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #1a3e6a;
-        }
-        
-        .map-preview .land {
-            position: absolute;
-            background-color: #2d5a3d;
-            border: 1px solid #1c3b27;
-        }
-        
-        .map-preview .japan {
-            top: 20%;
-            left: 80%;
-            width: 10%;
-            height: 15%;
-            border-radius: 30% 30% 0 0;
-        }
-        
-        .map-preview .hawaii {
-            top: 50%;
-            left: 20%;
-            width: 3%;
-            height: 5%;
-            border-radius: 50%;
-        }
-        
-        .map-preview .australia {
-            bottom: 10%;
-            left: 75%;
-            width: 20%;
-            height: 30%;
-            border-radius: 0 0 30% 30%;
-        }
-        
-        .map-preview .marker {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        .map-preview .marker.red {
-            background-color: #e74c3c;
-            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.5);
-        }
-        
-        .map-preview .marker.blue {
-            background-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
-        }
-        
-        .map-preview .marker.purple {
-            background-color: #9b59b6;
-            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.5);
-        }
-        
-        .map-preview .marker.hiroshima {
-            top: 30%;
-            left: 78%;
-        }
-        
-        .map-preview .marker.pearl-harbor {
-            top: 50%;
-            left: 20%;
-        }
-        
-        .map-preview .marker.midway {
-            top: 40%;
-            left: 30%;
-        }
-        
-        .map-preview .marker.iwo-jima {
-            top: 35%;
-            left: 70%;
-        }
-        
-        .map-preview .marker.okinawa {
-            top: 32%;
-            left: 72%;
-        }
-        
-        .map-preview .movement-line {
-            position: absolute;
-            height: 3px;
-            transform-origin: left center;
-        }
-        
-        .map-preview .us-navy-line {
-            top: 50%;
-            left: 21%;
-            width: 40%;
-            background: linear-gradient(90deg, #3498db 0%, transparent 100%);
-            transform: rotate(35deg);
-        }
-        
-        .map-preview .us-marine-line {
-            top: 45%;
-            left: 40%;
-            width: 30%;
-            background: linear-gradient(90deg, #000 0%, transparent 100%);
-            transform: rotate(50deg);
-        }
-        
-        .map-preview .japanese-line {
-            top: 30%;
-            left: 81%;
-            width: 50%;
-            background: linear-gradient(270deg, #e74c3c 0%, transparent 100%);
-            transform: rotate(-40deg);
-        }
     </style>
 </head>
 <body>
@@ -507,52 +338,11 @@
             </div>
             
             <div class="points-list" id="points-list">
-                <div class="point-item">
-                    <h4>Japan invades Manchuria</h4>
-                    <p><strong>Sept. 18, 1931</strong> - Japan seizes Manchuria after staging Mukden Incident...</p>
-                </div>
-                <div class="point-item">
-                    <h4>Japan attacks Pearl Harbor</h4>
-                    <p><strong>Dec. 7, 1941</strong> - Japanese carrier fleet launches surprise strike on U.S. Pacific Fleet...</p>
-                </div>
-                <div class="point-item">
-                    <h4>Battle of Midway</h4>
-                    <p><strong>June 4–7, 1942</strong> - U.S. Navy ambushes and devastates Japanese fleet, sinking four carriers...</p>
-                </div>
-                <div class="point-item">
-                    <h4>Atomic bomb on Hiroshima</h4>
-                    <p><strong>Aug. 6, 1945</strong> - U.S. drops atomic bomb, killing 70,000 instantly...</p>
-                </div>
-                <div class="point-item">
-                    <h4>Japan signs surrender</h4>
-                    <p><strong>Sept. 2, 1945</strong> - Japanese and Allied officials sign surrender documents aboard USS Missouri...</p>
-                </div>
+                <!-- Points will be added here dynamically -->
             </div>
         </div>
         
-        <div class="map-placeholder">
-            <h2>Interactive Map Preview</h2>
-            <p>This preview shows the layout and design of the interactive WWII Pacific Theater map. When implemented with Leaflet.js, this will be a fully interactive map with clickable markers, movement lines, and detailed information about each battle.</p>
-            
-            <div class="map-preview">
-                <div class="pacific-ocean"></div>
-                <div class="land japan"></div>
-                <div class="land hawaii"></div>
-                <div class="land australia"></div>
-                
-                <div class="marker red hiroshima"></div>
-                <div class="marker blue pearl-harbor"></div>
-                <div class="marker purple midway"></div>
-                <div class="marker blue iwo-jima"></div>
-                <div class="marker blue okinawa"></div>
-                
-                <div class="movement-line us-navy-line"></div>
-                <div class="movement-line us-marine-line"></div>
-                <div class="movement-line japanese-line"></div>
-            </div>
-            
-            <p style="margin-top: 20px;">The final map will include all the events you listed, with red markers for Japanese offensives, blue for US offensives, and purple for joint engagements.</p>
-        </div>
+        <div id="map"></div>
         
         <div class="legend">
             <h4>Map Legend</h4>
@@ -646,21 +436,184 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // This is a simplified preview version
-        // The actual implementation would use Leaflet.js for the interactive map
+        // Initialize the map with a Pacific-centered view
+        const map = L.map('map').setView([20, 150], 4);
         
-        document.getElementById('search-btn').addEventListener('click', function() {
+        // Add base tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Add satellite tile layer (initially hidden)
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+        
+        // Sample battle data - this would be expanded with all your events
+        const battles = [
+            {
+                id: 1,
+                name: "Japan invades Manchuria",
+                date: "Sept. 18, 1931",
+                description: "Japan seizes Manchuria after staging Mukden Incident; League of Nations protests ignored, emboldening Japan's empire-building.",
+                lat: 41.8,
+                lng: 123.4,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.britannica.com/event/Mukden-Incident"
+            },
+            {
+                id: 5,
+                name: "Day of Infamy: Japan attacks Pearl Harbor",
+                date: "Dec. 7, 1941",
+                description: "Japanese carrier fleet launches surprise strike on U.S. Pacific Fleet, killing over 2,400 Americans; attack galvanizes U.S. 'righteous might'.",
+                lat: 21.37,
+                lng: -157.97,
+                category: "japanese-offensive",
+                color: "#e74c3c",
+                source: "https://www.nationalww2museum.org/war/articles/pearl-harbor-attack"
+            },
+            {
+                id: 19,
+                name: "Victory at Midway turns tide",
+                date: "June 4–7, 1942",
+                description: "U.S. Navy ambushes and devastates Japanese fleet, sinking four carriers. Battle of Midway proves inflection point in the Pacific War.",
+                lat: 28.2,
+                lng: -177.4,
+                category: "joint-engagement",
+                color: "#9b59b6",
+                source: "https://www.history.navy.mil/browse-by-topic/wars-conflicts-and-operations/world-war-ii/1942/battle-of-midway.html"
+            },
+            {
+                id: 35,
+                name: "Atomic bomb attack on Hiroshima",
+                date: "Aug. 6, 1945",
+                description: "U.S. drops atomic bomb, killing 70,000 instantly; radiation and firestorms kill tens of thousands more.",
+                lat: 34.4,
+                lng: 132.5,
+                category: "us-offensive",
+                color: "#ff5733",
+                icon: "atomic",
+                source: "https://www.history.com/topics/world-war-ii/bombing-of-hiroshima-and-nagasaki"
+            },
+            {
+                id: 37,
+                name: "Japan signs surrender",
+                date: "Sept. 2, 1945",
+                description: "Japanese and Allied officials ink name to surrender documents aboard USS Missouri in Tokyo Bay, formally ending WWII and 14 years of conflict in Asia.",
+                lat: 35.35,
+                lng: 139.65,
+                category: "us-flag",
+                color: "#3498db",
+                icon: "flag",
+                source: "https://www.britannica.com/event/Surrender-of-Japan"
+            }
+        ];
+        
+        // Create marker cluster group
+        const markers = L.layerGroup().addTo(map);
+        
+        // Function to create custom icon
+        function createCustomIcon(color, iconType = null) {
+            let html = '';
+            if (iconType === 'atomic') {
+                html = `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px ${color};"></div>`;
+            } else if (iconType === 'flag') {
+                html = `<div style="background-color: #BF0A30; width: 20px; height: 20px; border-radius: 50%; border: 1px solid #002868; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold;">F</div>`;
+            } else if (iconType === 'bombing') {
+                html = `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; display: flex; justify-content: center; align-items: center; font-size: 12px;">B</div>`;
+            } else {
+                html = `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white;"></div>`;
+            }
+            
+            return L.divIcon({
+                html: html,
+                className: 'custom-marker',
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            });
+        }
+
+        // Add points to map and sidebar
+        function renderPoints() {
+            // Clear existing markers and list
+            markers.clearLayers();
+            document.getElementById('points-list').innerHTML = '';
+            
+            // Get search term
             const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            alert(`Search functionality would look for: ${searchTerm}`);
+            
+            // Filter points based on search term
+            const filteredBattles = battles.filter(battle => 
+                battle.name.toLowerCase().includes(searchTerm) || 
+                battle.description.toLowerCase().includes(searchTerm) ||
+                battle.date.toLowerCase().includes(searchTerm)
+            );
+            
+            // Add markers to map and list items to sidebar
+            filteredBattles.forEach(battle => {
+                // Create custom icon
+                const customIcon = createCustomIcon(battle.color, battle.icon);
+                
+                // Create marker
+                const marker = L.marker([battle.lat, battle.lng], {icon: customIcon})
+                    .addTo(markers);
+                
+                // Create popup content
+                const popupContent = `
+                    <div class="custom-popup">
+                        <h3>${battle.name}</h3>
+                        <p><strong>Date:</strong> ${battle.date}</p>
+                        <p>${battle.description}</p>
+                        ${battle.source ? `<p><a href="${battle.source}" target="_blank">Learn more</a></p>` : ''}
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent, {maxWidth: 300});
+                
+                // Create list item
+                const listItem = document.createElement('div');
+                listItem.className = 'point-item';
+                listItem.innerHTML = `
+                    <h4>${battle.name}</h4>
+                    <p><strong>${battle.date}</strong> - ${battle.description.substring(0, 60)}...</p>
+                `;
+                
+                // Add click event to center map on marker
+                listItem.addEventListener('click', () => {
+                    map.setView([battle.lat, battle.lng], 6);
+                    marker.openPopup();
+                });
+                
+                document.getElementById('points-list').appendChild(listItem);
+            });
+        }
+        
+        // Initial render
+        renderPoints();
+        
+        // Event listeners
+        document.getElementById('search-input').addEventListener('input', renderPoints);
+        document.getElementById('search-btn').addEventListener('click', renderPoints);
+        
+        document.getElementById('reset-view').addEventListener('click', () => {
+            map.setView([20, 150], 4);
         });
         
-        document.getElementById('reset-view').addEventListener('click', function() {
-            alert('Map view would be reset to default');
-        });
-        
-        document.getElementById('toggle-satellite').addEventListener('click', function() {
-            alert('View would toggle between map and satellite');
+        let isSatelliteView = false;
+        document.getElementById('toggle-satellite').addEventListener('click', () => {
+            isSatelliteView = !isSatelliteView;
+            if (isSatelliteView) {
+                map.remove();
+                satelliteLayer.addTo(map);
+                markers.addTo(map);
+                document.getElementById('toggle-satellite').textContent = 'Map View';
+            } else {
+                map.removeLayer(satelliteLayer);
+                document.getElementById('toggle-satellite').textContent = 'Satellite View';
+            }
         });
         
         // Timeline functionality
@@ -679,13 +632,8 @@
             });
         });
         
-        // Point item functionality
-        document.querySelectorAll('.point-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const title = this.querySelector('h4').textContent;
-                alert(`Would center map on: ${title}`);
-            });
-        });
+        // Add scale control
+        L.control.scale({metric: true, imperial: false}).addTo(map);
     </script>
 </body>
 </html>
