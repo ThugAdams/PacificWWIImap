@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WWII Pacific Theater</title>
+    <title>Righteous Might: Victory over Japan in World War II</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         * {
@@ -84,6 +84,12 @@
             box-shadow: 0 0 3px rgba(0,0,0,0.3);
         }
         
+        .legend-line {
+            width: 30px;
+            height: 4px;
+            margin-right: 12px;
+        }
+        
         .leaflet-popup-content {
             margin: 15px;
             max-width: 300px;
@@ -132,6 +138,19 @@
             z-index: 1000;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
+        
+        .number-marker {
+            background: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 22px;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
 <body>
@@ -155,6 +174,22 @@
             <span>Joint Engagement</span>
         </div>
         <div class="legend-item">
+            <div class="legend-line" style="background-color: #2ecc71;"></div>
+            <span>US Army Movement</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background-color: #3498db;"></div>
+            <span>US Navy Movement</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background-color: #000;"></div>
+            <span>US Marine Movement</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background-color: #e74c3c;"></div>
+            <span>Japanese Movement</span>
+        </div>
+        <div class="legend-item">
             <div class="legend-color" style="background-color: #ff5733;"></div>
             <span>Atomic Bomb</span>
         </div>
@@ -175,7 +210,7 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
-        // All battle data with coordinates
+        // All battle data with coordinates - numbered in chronological order
         const battles = [
             {
                 id: 1,
@@ -493,7 +528,7 @@
                 description: "Photographer Joe Rosenthal snaps picture of six marines raising an American flag.",
                 lat: 24.75,
                 lng: 141.29,
-                category: "us-offensive",
+                category: "us-flag",
                 color: "#BF0A30"
             },
             {
@@ -544,7 +579,7 @@
                 description: "U.S. drops atomic bomb, killing 70,000 instantly.",
                 lat: 34.4,
                 lng: 132.5,
-                category: "us-offensive",
+                category: "atomic-bomb",
                 color: "#ff5733",
                 source: "https://www.history.com/topics/world-war-ii/bombing-of-hiroshima-and-nagasaki"
             },
@@ -555,7 +590,7 @@
                 description: "Second atomic bomb devastates Nagasaki.",
                 lat: 32.8,
                 lng: 129.9,
-                category: "us-offensive",
+                category: "atomic-bomb",
                 color: "#ff5733",
                 source: "https://www.history.com/topics/world-war-ii/bombing-of-hiroshima-and-nagasaki"
             },
@@ -572,20 +607,20 @@
             }
         ];
 
-        // Function to create custom icon
-        function createCustomIcon(color) {
+        // Function to create custom icon with number
+        function createCustomIcon(color, number) {
             return L.divIcon({
-                html: `<div style="background-color: ${color}; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
+                html: `<div class="number-marker" style="background-color: ${color}; color: ${color === '#BF0A30' || color === '#000' ? 'white' : 'black'};">${number}</div>`,
                 className: 'custom-marker',
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
+                iconSize: [26, 26],
+                iconAnchor: [13, 13]
             });
         }
 
-        // Add all battles to the map
+        // Add all battles to the map with numbers
         battles.forEach(battle => {
             const marker = L.marker([battle.lat, battle.lng], {
-                icon: createCustomIcon(battle.color)
+                icon: createCustomIcon(battle.color, battle.id)
             }).addTo(map);
             
             const popupContent = `
@@ -597,6 +632,57 @@
             
             marker.bindPopup(popupContent);
         });
+
+        // Add movement lines
+        const usNavyMovement = [
+            [21.37, -157.97], // Pearl Harbor
+            [28.2, -177.4],   // Midway
+            [-9.5, 160.0],    // Guadalcanal
+            [15.2, 145.8],    // Saipan
+            [12.9, 121.8],    // Philippines
+            [35.35, 139.65]   // Tokyo Bay
+        ];
+        
+        const usNavyPolyline = L.polyline(usNavyMovement, {
+            color: '#3498db',
+            weight: 4,
+            opacity: 0.7,
+            dashArray: '10, 10'
+        }).addTo(map);
+        
+        const japaneseMovement = [
+            [41.8, 123.4],    // Manchuria
+            [39.9, 116.4],    // China
+            [21.0, 105.8],    // French Indochina
+            [21.37, -157.97], // Pearl Harbor
+            [15.2, 120.9],    // Philippines
+            [3.1, 101.7],     // Malaya
+            [1.3, 103.8]      // Singapore
+        ];
+        
+        const japanesePolyline = L.polyline(japaneseMovement, {
+            color: '#e74c3c',
+            weight: 4,
+            opacity: 0.7,
+            dashArray: '10, 10'
+        }).addTo(map);
+
+        // Add arrowheads manually by adding marker at the end
+        const usNavyArrow = L.marker([35.35, 139.65], {
+            icon: L.divIcon({
+                html: '<div style="font-size: 20px; color: #3498db;">➤</div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map);
+        
+        const japaneseArrow = L.marker([1.3, 103.8], {
+            icon: L.divIcon({
+                html: '<div style="font-size: 20px; color: #e74c3c;">➤</div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map);
 
         // Add scale control
         L.control.scale({metric: true, imperial: false}).addTo(map);
